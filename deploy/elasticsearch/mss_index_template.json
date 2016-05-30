@@ -1,0 +1,209 @@
+{
+  "order": 0,
+  "template": "mss*",
+  "settings": {},
+  "mappings": {
+    "bidding_bundle": {
+      "properties": {
+        "adSlotWidth": {
+          "type": "integer"
+        },
+        "streamId": {
+          "type": "integer"
+        },
+        "keywords": {
+          "type": "string"
+        },
+        "city": {
+          "type": "integer"
+        },
+        "extAdExchange": {
+          "properties": {
+            "name": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "description": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "id": {
+              "type": "integer"
+            }
+          }
+        },
+        "extUserAgent": {
+          "properties": {
+            "uaFamily": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "uaType": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "osName": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "device": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "extState": {
+          "properties": {
+            "gsp": {
+              "type": "long"
+            },
+            "name": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "population": {
+              "type": "long"
+            }
+          }
+        },
+        "payingPrice": {
+          "type": "double"
+        },
+        "creativeId": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "extLogType": {
+          "properties": {
+            "name": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "id": {
+              "type": "integer"
+            }
+          }
+        },
+        "adSlotFormat": {
+          "type": "integer"
+        },
+        "userTags": {
+          "type": "long"
+        },
+        "anonymousUrl": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "ipinyouId": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "extUserTags": {
+          "properties": {
+            "matchType": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "destinationUrl": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "id": {
+              "type": "long"
+            },
+            "pricingType": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "status": {
+              "index": "not_analyzed",
+              "type": "string"
+            }
+          }
+        },
+        "adExchange": {
+          "type": "long"
+        },
+        "ip": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "adSlotVisibility": {
+          "type": "long"
+        },
+        "userAgent": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "biddingPrice": {
+          "type": "double"
+        },
+        "adSlotHeight": {
+          "type": "long"
+        },
+        "bidId": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "url": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "advertiserId": {
+          "type": "long"
+        },
+        "extCity": {
+          "properties": {
+            "area": {
+              "type": "double"
+            },
+            "density": {
+              "type": "double"
+            },
+            "latitude": {
+              "type": "double"
+            },
+            "stateId": {
+              "type": "long"
+            },
+            "name": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "id": {
+              "type": "long"
+            },
+            "longitude": {
+              "type": "double"
+            },
+            "population": {
+              "type": "long"
+            }
+          }
+        },
+        "adSlotId": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "domain": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "location": {
+          "type": "geo_point"
+        },
+        "region": {
+          "type": "long"
+        },
+        "ts": {
+          "format": "epoch_millis",
+          "type": "date"
+        }
+      }
+    }
+  },
+  "aliases": {}
+}
