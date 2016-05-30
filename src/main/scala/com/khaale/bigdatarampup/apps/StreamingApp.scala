@@ -4,7 +4,7 @@ import java.nio.file.Files
 
 import com.khaale.bigdatarampup.etl._
 import com.khaale.bigdatarampup.models.BiddingSession
-import com.khaale.bigdatarampup.shared.AppSettingsProvider
+import com.khaale.bigdatarampup.shared.{AppSettingsProvider, SparkSettings}
 import com.khaale.bigdatarampup.shared.cassandra.CassandraFacade
 import com.khaale.bigdatarampup.shared.elasticsearch.{ESFacade, ESSettings}
 import kafka.serializer.StringDecoder
@@ -25,24 +25,19 @@ object StreamingApp extends App with Logging  {
   }
   val isTest = settingsProvider.isTestRun
   val kafkaSettingsOpt = settingsProvider.getKafkaSettings
-
-  def checkpointDir: String = Files.createTempDirectory(this.getClass.getSimpleName).toUri.toString
+  val sparkSettings = settingsProvider.getSparkSettings match {
+    case Some(x) => x
+    case None => SparkSettings(checkpointDir)
+  }
 
   val conf = new SparkConf().setMaster("local[2]").setAppName("StreamingApp")
-    .set("spark.cassandra.connection.host", settingsProvider.cassandraSettings.get.host)
+    .set("spark.cassandra.connection.host", settingsProvider.getCassandraSettings.get.host)
     .set("spark.cleaner.ttl", "3600")
     .set("es.index.auto.create", "true")
 
-
   val ssc = new StreamingContext(conf, Seconds(1))
   ssc.checkpoint(checkpointDir)
-
   val sc = ssc.sparkContext
-  //val sc = new SparkContext(conf)
-  //val sqlc =  SQLContext.getOrCreate(sc)
-
-  //import ConditionalApplicative._
-  //import sqlc.implicits._
 
   run()
 
@@ -59,7 +54,7 @@ object StreamingApp extends App with Logging  {
     val savedBundles = biddingBundles.transform(rdd => {
       rdd.cache()
       ESFacade.saveBiddingBundles(rdd, ESSettings("mss"))
-      CassandraFacade.saveBiddingBundles(rdd, settingsProvider.cassandraSettings.get)
+      CassandraFacade.saveBiddingBundles(rdd, settingsProvider.getCassandraSettings.get)
       rdd
     })
     savedBundles.glom()
@@ -68,7 +63,7 @@ object StreamingApp extends App with Logging  {
 
     val savedSessions = sessions.transform(rdd => {
       rdd.cache()
-      CassandraFacade.saveBiddingSession(rdd.filter(r => r.status == BiddingSession.stateClosed), settingsProvider.cassandraSettings.get)
+      CassandraFacade.saveBiddingSession(rdd.filter(r => r.status == BiddingSession.stateClosed), settingsProvider.getCassandraSettings.get)
       rdd
     })
 
@@ -79,6 +74,9 @@ object StreamingApp extends App with Logging  {
     // Wait for the computation to terminate
     ssc.awaitTermination()
   }
+
+  def checkpointDir: String = Files.createTempDirectory(this.getClass.getSimpleName).toUri.toString
+
 }
 
 

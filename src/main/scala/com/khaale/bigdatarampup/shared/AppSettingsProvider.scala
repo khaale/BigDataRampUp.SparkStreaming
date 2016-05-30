@@ -59,13 +59,22 @@ class AppSettingsProvider(configPath:String) {
     Some(KafkaStreamerSettings(cfg.getString("broker"), cfg.getString("topic")))
   }
 
-  def cassandraSettings: Option[CassandraSettings] = {
+  def getCassandraSettings: Option[CassandraSettings] = {
     if (!appCfg.hasPath("cassandra")) {
       return None
     }
 
     val cfg = appCfg.getConfig("cassandra")
     Some(CassandraSettings(cfg.getString("host"), cfg.getString("keyspace")))
+  }
+
+  def getSparkSettings:Option[SparkSettings] = {
+    if (!appCfg.hasPath("spark")) {
+      return None
+    }
+
+    val cfg = appCfg.getConfig("spark")
+    Some(SparkSettings(cfg.getString("checkpoint-directory")))
   }
 }
 
@@ -88,3 +97,5 @@ object DictionarySettings {
     dictionaryDirPath + "/user.profile.tags.us.txt"
     )
 }
+
+case class SparkSettings(checkpointDir:String)
